@@ -7,8 +7,9 @@ public class Web : MonoBehaviour
 {
     private void Start()
     {
-        StartCoroutine(GetUsers());
+        //StartCoroutine(GetUsers());
         StartCoroutine(Login("testuser3","123456"));
+        StartCoroutine(RegisterUser("testuser3","123456"));
     }
 
     IEnumerator GetDate()
@@ -53,13 +54,34 @@ public class Web : MonoBehaviour
         }
     }
 
-    IEnumerator Login(string username, string password)
+    public IEnumerator Login(string username, string password)
     {
         WWWForm form = new WWWForm();
         form.AddField("loginUser", username);
         form.AddField("loginPass", password);
 
         using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/Login.php", form))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+    }
+
+    public IEnumerator RegisterUser(string username, string password)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("loginUser", username);
+        form.AddField("loginPass", password);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/RegisterUser.php", form))
         {
             yield return www.SendWebRequest();
 
