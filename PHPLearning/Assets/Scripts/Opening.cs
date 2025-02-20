@@ -5,22 +5,21 @@ using UnityEngine.UI;
 
 public class Opening : MonoBehaviour
 {
-    public Button loginButton;
-    public Button registerButton;
+    //public Button loginButton;
+    //public Button registerButton;
     public GameObject loginScreen;
     public GameObject registerScreen;
-    public GameObject openingScreen;
     
     public void Login()
     {
         loginScreen.SetActive(true);
-        openingScreen.SetActive(false);
+        registerScreen.SetActive(false);
     }
 
     public void Register()
     {
         registerScreen.SetActive(true);
-        openingScreen.SetActive(false);
+        loginScreen.SetActive(false);
     }
 
 }
