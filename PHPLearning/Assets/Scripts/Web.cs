@@ -12,6 +12,10 @@ public class Web : MonoBehaviour
         StartCoroutine(RegisterUser("testuser3","123456"));
     }
 
+    public void ShowUserItems()
+    {
+        StartCoroutine(GetItemsID(Main.instance.userInfo.UserID));
+    }
     IEnumerator GetDate()
     {
         using (UnityWebRequest www = UnityWebRequest.Get("http://localhost/UnityPHPLearning/GetDate.php"))
@@ -71,6 +75,8 @@ public class Web : MonoBehaviour
             else
             {
                 Debug.Log(www.downloadHandler.text);
+                Main.instance.userInfo.SetCredentials(username, password);
+                Main.instance.userInfo.SetID(www.downloadHandler.text);
             }
         }
     }
@@ -92,6 +98,30 @@ public class Web : MonoBehaviour
             else
             {
                 Debug.Log(www.downloadHandler.text);
+            }
+        }
+    }
+
+    IEnumerator GetItemsID(string userID)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("userID", userID);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/GetItemsID.php", form))
+        {
+            yield return www.Send();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log("www.error");
+            }
+            else
+            {
+                //Show results as text
+                Debug.Log(www.downloadHandler.text);
+                string jsonArray = www.downloadHandler.text;
+
+                //Call callback function to pass results
             }
         }
     }

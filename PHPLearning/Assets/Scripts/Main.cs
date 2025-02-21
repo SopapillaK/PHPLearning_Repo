@@ -7,12 +7,14 @@ public class Main : MonoBehaviour
     public static Main instance;
 
     public Web web;
+    public UserInfo userInfo;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        web = GetComponent<Web>();   
+        web = GetComponent<Web>();
+        userInfo = GetComponent<UserInfo>();
     }
     
 }
