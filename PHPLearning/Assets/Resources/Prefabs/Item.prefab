@@ -170,7 +170,7 @@ GameObject:
   - component: {fileID: 2312402713054576576}
   - component: {fileID: 5464720758946601988}
   m_Layer: 5
-  m_Name: Price (1)
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

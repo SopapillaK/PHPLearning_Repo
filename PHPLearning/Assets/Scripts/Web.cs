@@ -8,14 +8,14 @@ public class Web : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(GetUsers());
-        StartCoroutine(Login("testuser3","123456"));
-        StartCoroutine(RegisterUser("testuser3","123456"));
+        StartCoroutine(Login("",""));
+        StartCoroutine(RegisterUser("",""));
     }
 
-    public void ShowUserItems()
-    {
-        StartCoroutine(GetItemsID(Main.instance.userInfo.UserID));
-    }
+    //public void ShowUserItems()
+    //{
+    //    StartCoroutine(GetItemsID(Main.instance.userInfo.UserID));
+    //}
     IEnumerator GetDate()
     {
         using (UnityWebRequest www = UnityWebRequest.Get("http://localhost/UnityPHPLearning/GetDate.php"))
@@ -68,15 +68,27 @@ public class Web : MonoBehaviour
         {
             yield return www.SendWebRequest();
 
-            if (www.result != UnityWebRequest.Result.Success)
+            if (www.isNetworkError || www.isHttpError)
             {
-                Debug.LogError(www.error);
+                Debug.Log(www.error);
             }
             else
             {
                 Debug.Log(www.downloadHandler.text);
                 Main.instance.userInfo.SetCredentials(username, password);
                 Main.instance.userInfo.SetID(www.downloadHandler.text);
+
+                if (www.downloadHandler.text.Contains("Wrong credentials.") || www.downloadHandler.text.Contains("Username does not exist."))
+                {
+                    Debug.Log("Try again.");
+                }
+                else
+                {
+                    //if we logged in correctly
+
+                    Main.instance.userProfile.SetActive(true);
+                    Main.instance.login.gameObject.SetActive(false);
+                }
             }
         }
     }
@@ -102,7 +114,7 @@ public class Web : MonoBehaviour
         }
     }
 
-    IEnumerator GetItemsID(string userID)
+    public IEnumerator GetItemsID(string userID, System.Action<string> callback)
     {
         WWWForm form = new WWWForm();
         form.AddField("userID", userID);
@@ -122,6 +134,32 @@ public class Web : MonoBehaviour
                 string jsonArray = www.downloadHandler.text;
 
                 //Call callback function to pass results
+                callback(jsonArray);
+            }
+        }
+    }
+
+    public IEnumerator GetItem(string itemID, System.Action<string> callback)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("itemID", itemID);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/GetItem.php", form))
+        {
+            yield return www.Send();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log("www.error");
+            }
+            else
+            {
+                //Show results as text
+                Debug.Log(www.downloadHandler.text);
+                string jsonArray = www.downloadHandler.text;
+
+                //Call callback function to pass results
+                callback(jsonArray);
             }
         }
     }

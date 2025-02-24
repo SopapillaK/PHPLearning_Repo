@@ -8,6 +8,9 @@ public class Main : MonoBehaviour
 
     public Web web;
     public UserInfo userInfo;
+    public Login login;
+
+    public GameObject userProfile;
 
     // Start is called before the first frame update
     void Start()
