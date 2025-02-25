@@ -42,7 +42,7 @@ public class Items : MonoBehaviour
             {
                 isDone = true;
                 JSONArray tempArray = JSON.Parse(itemInfo) as JSONArray;
-                itemInfoJson = tempArray[0].AsObject;
+                itemInfoJson = tempArray[0] as JSONObject;
             };
 
             StartCoroutine(Main.instance.web.GetItem(itemId, getItemmInfoCallback));
@@ -51,7 +51,7 @@ public class Items : MonoBehaviour
             yield return new WaitUntil(() => isDone == true);
 
             //insatiate gameobject (item prefab)
-            GameObject item = Instantiate(Resources.Load("Prefab/Item") as GameObject);
+            GameObject item = Instantiate(Resources.Load("Prefabs/Item") as GameObject);
             item.transform.SetParent(this.transform);
             item.transform.localScale = Vector3.one;
             item.transform.localPosition = Vector3.zero;

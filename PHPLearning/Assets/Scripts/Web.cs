@@ -8,8 +8,8 @@ public class Web : MonoBehaviour
     private void Start()
     {
         //StartCoroutine(GetUsers());
-        StartCoroutine(Login("",""));
-        StartCoroutine(RegisterUser("",""));
+        //StartCoroutine(Login("",""));
+        //StartCoroutine(RegisterUser("",""));
     }
 
     //public void ShowUserItems()
