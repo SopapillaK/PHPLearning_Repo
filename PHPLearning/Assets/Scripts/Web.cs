@@ -163,4 +163,27 @@ public class Web : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator SellItem(string itemID, string userID)
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("itemID", itemID);
+        form.AddField("userID", userID);
+
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/SellItem.php", form))
+        {
+            yield return www.Send();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                //Show results as text
+                Debug.Log(www.downloadHandler.text);
+
+            }
+        }
+    }
 }
