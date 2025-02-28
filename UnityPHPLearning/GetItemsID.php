@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully <br><br>";
 
-$sql = "SELECT itemID FROM usersitems WHERE userID = '". $userID . "'";
+$sql = "SELECT ID, itemID FROM usersitems WHERE userID = '". $userID . "'";
 
 $result = $conn->query($sql);
 

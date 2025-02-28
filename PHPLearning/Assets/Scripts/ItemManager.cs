@@ -70,9 +70,10 @@ public class ItemManager : MonoBehaviour
 
             //set sell button
             itemGo.transform.Find("SellButton").GetComponent<Button>().onClick.AddListener(() => {
+                string iId = itemId;
                 string idInInventory = id;
                 string userId = Main.instance.userInfo.UserID;
-                StartCoroutine(Main.instance.web.SellItem(idInInventory, userId));
+                StartCoroutine(Main.instance.web.SellItem(idInInventory, iId, userId));
             });
 
             //continue to next item
