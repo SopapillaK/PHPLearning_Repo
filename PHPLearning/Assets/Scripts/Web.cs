@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -7,7 +9,7 @@ public class Web : MonoBehaviour
 {
     private void Start()
     {
-        //StartCoroutine(GetUsers());
+        StartCoroutine(GetDate());
         //StartCoroutine(Login("",""));
         //StartCoroutine(RegisterUser("",""));
     }
@@ -16,23 +18,38 @@ public class Web : MonoBehaviour
     //{
     //    StartCoroutine(GetItemsID(Main.instance.userInfo.UserID));
     //}
+
+
     IEnumerator GetDate()
     {
-        using (UnityWebRequest www = UnityWebRequest.Get("http://localhost/UnityPHPLearning/GetDate.php"))
+        using (UnityWebRequest www = UnityWebRequest.Get("http://phptutorial.hstn.me/GetDate.php"))
         {
+            // ---testing aeonfree
+            www.SetRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+            www.SetRequestHeader("Accept-Encoding", "gzip, deflate");
+            www.SetRequestHeader("Accept-Language", "en");
+            www.SetRequestHeader("Cache-Control", "max-age=0");
+            www.SetRequestHeader("Cookie", "__test=d4f16507ae75e677830d2f5a3f570eca");
+            www.SetRequestHeader("Upgrade-Insecure-Requests", "1");
+            www.SetRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36");
             yield return www.Send();
 
-            if (www.isNetworkError || www.isHttpError)
-            {
-                Debug.Log("www.error");
-            }
-            else
-            {
-                //Show results as text
-                Debug.Log(www.downloadHandler.text);
+            string uri = "http://phptutorial.hstn.me/GetDate.php";
+            string[] pages = uri.Split('/');
+            int page = pages.Length - 1;
 
-                //or retrieve results as binary data
-                byte[] results = www.downloadHandler.data;
+            switch (www.result)
+            {
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.DataProcessingError:
+                    Debug.LogError(pages[page] + ": Error: " + www.error);
+                    break;
+                case UnityWebRequest.Result.ProtocolError:
+                    Debug.LogError(pages[page] + ": HTTP Error: " + www.error);
+                    break;
+                case UnityWebRequest.Result.Success:
+                    Debug.Log(pages[page] + ":\nReceived: " + www.downloadHandler.text);
+                    break;
             }
         }
     }
@@ -41,6 +58,14 @@ public class Web : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequest.Get("http://localhost/UnityPHPLearning/GetUsers.php"))
         {
+            // ---testing aeonfree
+            www.SetRequestHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+            www.SetRequestHeader("Accept-Encoding", "gzip, deflate");
+            www.SetRequestHeader("Accept-Language", "en");
+            www.SetRequestHeader("Cache-Control", "max-age=0");
+            www.SetRequestHeader("Cookie", "__test=d4f16507ae75e677830d2f5a3f570eca");
+            www.SetRequestHeader("Upgrade-Insecure-Requests", "1");
+            www.SetRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36");
             yield return www.Send();
 
             if (www.isNetworkError || www.isHttpError)
