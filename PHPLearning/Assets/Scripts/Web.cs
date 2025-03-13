@@ -64,7 +64,7 @@ public class Web : MonoBehaviour
         form.AddField("loginUser", username);
         form.AddField("loginPass", password);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/Login.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://phptutorial.hstn.me/?i=1/Login.php", form))
         {
             yield return www.SendWebRequest();
 
