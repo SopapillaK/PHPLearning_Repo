@@ -9,7 +9,7 @@ public class Web : MonoBehaviour
 {
     private void Start()
     {
-        StartCoroutine(GetDate());
+        //StartCoroutine(GetDate());
         //StartCoroutine(Login("",""));
         //StartCoroutine(RegisterUser("",""));
     }
@@ -89,7 +89,7 @@ public class Web : MonoBehaviour
         form.AddField("loginUser", username);
         form.AddField("loginPass", password);
 
-        using (UnityWebRequest www = UnityWebRequest.Post("http://phptutorial.hstn.me/?i=1/Login.php", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://localhost/UnityPHPLearning/Login.php", form))
         {
             yield return www.SendWebRequest();
 
