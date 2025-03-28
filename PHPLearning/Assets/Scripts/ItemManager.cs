@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using SimpleJSON;
+using UnityEngine.XR;
 
 public class ItemManager : MonoBehaviour
 {
@@ -67,6 +68,32 @@ public class ItemManager : MonoBehaviour
             itemGo.transform.Find("Name").GetComponent<Text>().text = itemInfoJson["name"];
             itemGo.transform.Find("Price").GetComponent<Text>().text = itemInfoJson["price"];
             itemGo.transform.Find("Description").GetComponent<Text>().text = itemInfoJson["description"];
+
+            //savwe image in out device if we doenloaded it
+
+            byte[] bytes = ImageManager.instance.LoadImage(itemId);
+
+            //download from web
+            if (bytes.Length == 0)
+            {
+                //get bytes unstead of sprites
+                Action<byte[]> getItemmIconCallback = (downloadedBytes) =>
+                {
+                    //convert bytes into sprite
+                    Sprite sprite = ImageManager.instance.BytesToSprite(downloadedBytes);
+                    itemGo.transform.Find("Image").GetComponent<Image>().sprite = sprite;
+                    ImageManager.instance.SaveImage(itemId, downloadedBytes);
+                };
+                StartCoroutine(Main.instance.web.GetItemIcon(itemId, getItemmIconCallback));
+
+            }
+            //load from device
+            else
+            {
+                Sprite sprite = ImageManager.instance.BytesToSprite(bytes);
+                itemGo.transform.Find("Image").GetComponent<Image>().sprite = sprite;
+            }
+
 
             //set sell button
             itemGo.transform.Find("SellButton").GetComponent<Button>().onClick.AddListener(() => {
