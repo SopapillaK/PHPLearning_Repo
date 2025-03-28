@@ -2,15 +2,15 @@
 
 require 'ConnectionSettings.php';
 
-//vars sumbitted by user
-// $loginUser = $_POST["loginUser"];
-// $loginPass = $_POST["loginPass"];
-$itemID = $_POST["itemID"];
-
 // Check connection
 if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
+
+//vars sumbitted by user
+// $loginUser = $_POST["loginUser"];
+// $loginPass = $_POST["loginPass"];
+$itemID = $_POST["itemID"];
 
 $sql = "SELECT name, description, price FROM items WHERE ID = '". $itemID . "'";
 
