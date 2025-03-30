@@ -204,6 +204,7 @@ public class Web : MonoBehaviour
             }
             else
             {
+                Debug.Log("DOWNLOADING ICON: " + itemID);
                 //resulkts as byte array
                 byte[] bytes = www.downloadHandler.data;
                 callback(bytes);

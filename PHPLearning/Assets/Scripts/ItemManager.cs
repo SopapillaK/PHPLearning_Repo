@@ -69,9 +69,11 @@ public class ItemManager : MonoBehaviour
             itemGo.transform.Find("Price").GetComponent<Text>().text = itemInfoJson["price"];
             itemGo.transform.Find("Description").GetComponent<Text>().text = itemInfoJson["description"];
 
-            //savwe image in out device if we doenloaded it
+            // get img version and send it to Image Manager
+            int imgVer = itemInfoJson["imgVer"].AsInt;
 
-            byte[] bytes = ImageManager.instance.LoadImage(itemId);
+            //savwe image in out device if we doenloaded it
+            byte[] bytes = ImageManager.instance.LoadImage(itemId, imgVer);
 
             //download from web
             if (bytes.Length == 0)
@@ -82,7 +84,8 @@ public class ItemManager : MonoBehaviour
                     //convert bytes into sprite
                     Sprite sprite = ImageManager.instance.BytesToSprite(downloadedBytes);
                     itemGo.transform.Find("Image").GetComponent<Image>().sprite = sprite;
-                    ImageManager.instance.SaveImage(itemId, downloadedBytes);
+                    ImageManager.instance.SaveImage(itemId, downloadedBytes, imgVer);
+                    ImageManager.instance.SaveVersionJson();
                 };
                 StartCoroutine(Main.instance.web.GetItemIcon(itemId, getItemmIconCallback));
 
@@ -105,6 +108,5 @@ public class ItemManager : MonoBehaviour
 
             //continue to next item
         }
-        yield return null;
     }
 }
